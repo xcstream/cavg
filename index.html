@@ -1,0 +1,66 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>期望伤害计算</title>
+    <script src="https://cdn.staticfile.org/vue/2.6.9/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/element-ui/2.15.8/index.min.js"></script>
+    <link crossorigin="anonymous" media="all"  rel="stylesheet" href="https://cdn.staticfile.org/element-ui/2.15.8/theme-chalk/index.min.css">
+</head>
+<body>
+<div id="app">
+    <div style="margin:4px">
+        <div style="display: inline-block;width:70px">暴击率</div> <el-input v-model="x" style="width:80px"></el-input>%
+    </div>
+    <div style="margin:4px">
+        <div style="display: inline-block;width:70px">暴击伤害</div>   <el-input v-model="y" style="width:80px"></el-input>%
+    </div>
+    <div style="margin:4px">
+        <div style="display: inline-block;width:70px">暴击数字</div>   <el-input v-model="b" style="width:80px"></el-input>
+    </div>
+    <el-button style="width:180px" @click="cal">计算</el-button>
+
+    <div style="margin:4px;padding:4px" v-for = 'i of r'>
+        {{i}}
+    </div>
+
+</div>
+
+<script>
+    app = new Vue({
+        el:'#app',
+        data:{
+            x:'60',y:'120',b:'10000',avg:'',r:[]
+        },
+        methods:{
+            cal:function(){
+
+                var xx = parseFloat(this.x) / 100
+                var yy = parseFloat(this.y) / 100
+                var bb = parseFloat(this.b)
+
+                if(xx <0 && xx > 1){
+                    this.r = ['输入错误 暴击率在0-100%之间']
+                    return
+                }
+                if(yy < 1 ){
+                    this.r = ['输入错误 暴击伤害需要大于100%']
+                    console.log(yy)
+                    return
+                }
+                if(bb<0){
+                    this.r = ['输入错误 暴击数字需要大于0']
+                    return
+                }
+                aa = bb / yy
+                this.r = []
+                this.r.push(`输入暴击率 ${this.x}% 暴击伤害 ${this.y}% 暴击数字 ${this.b}`)
+                this.r.push( '不暴击伤害 '+aa.toFixed(2))
+                this.r.push ('期望伤害 '+ ( (1-xx) * aa + xx* bb ).toFixed(2))
+            }
+        }
+    })
+</script>
+</body>
+
+
+</html>
